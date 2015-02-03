@@ -33,14 +33,14 @@ function moveSegments()
       seg.y = seg.y + moveStep
     end
 
-    if seg.x > love.window.getWidth() then
-      seg.x = 0
-    elseif seg.x < 0 then
-      seg.x = love.window.getWidth()
-    elseif seg.y < 0 then
-      seg.y = love.window.getHeight()
-    elseif seg.y > love.window.getHeight() then
-      seg.y = 0
+    if seg.x >= love.window.getWidth() - 20 then
+      seg.x = 20
+    elseif seg.x <= 10 then
+      seg.x = love.window.getWidth() - 30
+    elseif seg.y <= 10 then
+      seg.y = love.window.getHeight() - 30
+    elseif seg.y >= love.window.getHeight() - 20 then
+      seg.y = 20
     end
   end
 end
