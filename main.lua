@@ -106,18 +106,36 @@ function love.load()
   snake[1].y = 50
 
   appleX, appleY = newApple()
+
+  img = love.graphics.newImage("circle.png")
+
+  myShader = love.graphics.newShader[[
+    vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
+      vec4 pixel = Texel(texture, texture_coords);
+      number factor = screen_coords.x / love_ScreenSize.x;
+
+      pixel.r = pixel.r * factor;
+      pixel.g = 1 - pixel.g * factor;
+      pixel.b = 1 - pixel.b * factor;
+      return pixel;
+    }
+  ]]
 end
 
 function love.draw()
+
   for k, seg in ipairs(snake) do
-    love.graphics.print("x", seg.x, seg.y)
+    love.graphics.draw(img, seg.x, seg.y, 0, 0.05, 0.05)
   end
-  love.graphics.print(".", appleX, appleY)
+  love.graphics.draw(img, appleX, appleY, 0, 0.05, 0.05)
 
   if collision then
     love.graphics.print("You lost!", 100, 100)
     paused = true
   end
+
+  love.graphics.setShader(myShader)
+
 end
 
 function love.keypressed(key)
