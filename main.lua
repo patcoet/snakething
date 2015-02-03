@@ -90,11 +90,12 @@ function love.load()
   myShader = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
       vec4 pixel = Texel(texture, texture_coords);
-      number factor = screen_coords.x / love_ScreenSize.x;
+      number xFactor = screen_coords.x / love_ScreenSize.x;
+      number yFactor = screen_coords.y / love_ScreenSize.y;
 
-      pixel.r = pixel.r * factor;
-      pixel.g = 1 - pixel.g * factor;
-      pixel.b = 1 - pixel.b * factor;
+      pixel.r = pixel.r * xFactor;
+      pixel.g = 1 - pixel.g * xFactor;
+      pixel.b = pixel.b * yFactor;
       return pixel;
     }
   ]]
