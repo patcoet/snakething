@@ -85,6 +85,7 @@ function love.load()
   font = love.graphics.newFont(20)
   counter = 0
   tick = 0
+  score = 0
 
   myShader = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
@@ -113,6 +114,8 @@ function love.draw()
     scale = math.abs(math.cos(counter))
   end
 
+  love.graphics.print("Score: " .. score, 0, 0)
+
   love.graphics.setShader(myShader)
 end
 
@@ -126,12 +129,20 @@ end
 
 function love.update(dt)
   if not paused then
+
     time = time and time + dt + dt * 0.005 * tick or 0
   end
 
   if time >= timeStep then
     time = time - timeStep
     tick = tick + 1
+    if tick >= 500 then
+      tick = tick - 1
+    end
+
+    if score > 0 then
+      score = score - 1
+    end
 
     dir = snake[1].dir
 
@@ -141,6 +152,7 @@ function love.update(dt)
 
     if snake[1].x == appleX and snake[1].y == appleY then
       addSegment(x, y)
+      score = score + 100
 
       local overlapping = true
 
