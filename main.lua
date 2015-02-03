@@ -84,6 +84,7 @@ function love.load()
   img = love.graphics.newImage("circle.png")
   font = love.graphics.newFont(20)
   counter = 0
+  tick = 0
 
   myShader = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
@@ -125,11 +126,12 @@ end
 
 function love.update(dt)
   if not paused then
-    time = time and time + dt or 0
+    time = time and time + dt + dt * 0.005 * tick or 0
   end
 
   if time >= timeStep then
     time = time - timeStep
+    tick = tick + 1
 
     dir = snake[1].dir
 
