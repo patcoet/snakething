@@ -62,7 +62,6 @@ end
 
 function love.load()
   math.randomseed(os.time())
-  love.window.setMode(200, 200)
 
   RIGHT = "right"
   LEFT = "left"
