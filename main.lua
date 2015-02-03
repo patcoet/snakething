@@ -82,6 +82,8 @@ function love.load()
   appleX, appleY = newApple()
 
   img = love.graphics.newImage("circle.png")
+  font = love.graphics.newFont(20)
+  counter = 0
 
   myShader = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
@@ -103,8 +105,11 @@ function love.draw()
   love.graphics.draw(img, appleX, appleY, 0, 0.05, 0.05)
 
   if collision then
-    love.graphics.print("You lost!", 100, 100)
+    love.graphics.setFont(font)
+    love.graphics.print("You lost!", 75, 75, 0, scale, scale)
     paused = true
+    counter = counter + 0.02
+    scale = math.abs(math.cos(counter))
   end
 
   love.graphics.setShader(myShader)
