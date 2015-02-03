@@ -1,19 +1,4 @@
 function addSegment(x, y)
-  -- snakeLength = snakeLength and snakeLength + 1 or 0
-  -- last = text:sub(text:len())
-
-  -- if last == "s" then
-  --   text = text .. "n"
-  -- elseif last == "n" then
-  --   text = text .. "a"
-  -- elseif last == "a" then
-  --   text = text .. "k"
-  -- elseif last == "k" then
-  --   text = text .. "e"
-  -- elseif last == "e" then
-  --   text = text .. "s"
-  -- end
-
   table.insert(snake, {})
 
   if snake[#snake - 1] then
@@ -22,8 +7,6 @@ function addSegment(x, y)
     snake[#snake].x = x
     snake[#snake].y = y
   end
-
-  -- text = text and text .. "x" or "x"
 end
 
 function collisionCheck()
@@ -31,7 +14,6 @@ function collisionCheck()
     if k > 1 then
       if snake[1].x == seg.x and snake[1].y == seg.y then
         collision = true
-        -- print(snake[1].x, seg.x, snake[1].y, seg.y, k)
       end
     end
   end
@@ -39,7 +21,6 @@ end
 
 function moveSegments()
   for k, seg in ipairs(snake) do
-    print(k, seg.dir, seg.x, seg.y)
     local dir = seg.dir
 
     if dir == RIGHT then
@@ -64,13 +45,12 @@ function moveSegments()
   end
 end
 
--- The snake is described as a table.
--- The head is part 1. On each tick,
--- part n goes in direction n.dir.
--- When the player presses an arrow
--- key, head.dir is updated, and on
--- each tick 5.dir = 4.dir, 4.dir
--- = 3.dir, etc.
+function newApple()
+  local x = math.random(4, 16) * 10
+  local y = math.random(4, 16) * 10
+
+  return x, y
+end
 
 function propagateMove()
   for i = #snake, 2, -1 do
@@ -78,12 +58,7 @@ function propagateMove()
   end
 end
 
-function newApple()
-  local x = math.random(4, 16) * 10
-  local y = math.random(4, 16) * 10
-
-  return x, y
-end
+-- LÖVE callbacks
 
 function love.load()
   math.randomseed(os.time())
@@ -123,7 +98,6 @@ function love.load()
 end
 
 function love.draw()
-
   for k, seg in ipairs(snake) do
     love.graphics.draw(img, seg.x, seg.y, 0, 0.05, 0.05)
   end
@@ -135,14 +109,12 @@ function love.draw()
   end
 
   love.graphics.setShader(myShader)
-
 end
 
 function love.keypressed(key)
-  -- dir = snake[1].dir
   if (key == "left" and dir ~= RIGHT) or (key == "right" and dir ~= LEFT) or (key == "up" and dir ~= DOWN) or (key == "down" and dir ~= UP) then
     snake[1].dir = key
-  elseif key == " " then
+  elseif key == " " and not collision then
     paused = not paused
   end
 end
@@ -162,7 +134,6 @@ function love.update(dt)
     moveSegments()
 
     if snake[1].x == appleX and snake[1].y == appleY then
-      print("adding segment")
       addSegment(x, y)
 
       local overlapping = true
@@ -184,8 +155,5 @@ function love.update(dt)
     propagateMove()
 
     collisionCheck()
-
-    print("")
-
   end
 end
