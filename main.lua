@@ -86,6 +86,7 @@ function love.load()
   counter = 0
   tick = 0
   score = 0
+  highest = 0
 
   myShader = love.graphics.newShader[[
     vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords) {
@@ -115,7 +116,7 @@ function love.draw()
     scale = math.abs(math.cos(counter))
   end
 
-  love.graphics.print("Score: " .. score, 0, 0)
+  love.graphics.print("Score: " .. score .. " (" .. highest .. ")", 0, 0)
 
   love.graphics.setShader(myShader)
 end
@@ -154,6 +155,7 @@ function love.update(dt)
     if snake[1].x == appleX and snake[1].y == appleY then
       addSegment(x, y)
       score = score + 100
+      highest = score > highest and score or highest
 
       local overlapping = true
 
