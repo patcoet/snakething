@@ -164,7 +164,21 @@ function love.update(dt)
     if snake[1].x == appleX and snake[1].y == appleY then
       print("adding segment")
       addSegment(x, y)
-      appleX, appleY = newApple()
+
+      local overlapping = true
+
+      while overlapping do
+        appleX, appleY = newApple()
+
+        for k, seg in ipairs(snake) do
+          if appleX == seg.x and appleY == seg.y then
+            overlapping = true
+            break
+          else
+            overlapping = false
+          end
+        end
+      end
     end
 
     propagateMove()
