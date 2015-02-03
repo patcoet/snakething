@@ -34,13 +34,13 @@ function moveSegments()
     end
 
     if seg.x >= love.window.getWidth() - 20 then
-      seg.x = 20
-    elseif seg.x <= 10 then
+      seg.x = 30
+    elseif seg.x <= 20 then
       seg.x = love.window.getWidth() - 30
-    elseif seg.y <= 10 then
+    elseif seg.y <= 20 then
       seg.y = love.window.getHeight() - 30
     elseif seg.y >= love.window.getHeight() - 20 then
-      seg.y = 20
+      seg.y = 30
     end
   end
 end
@@ -81,8 +81,13 @@ function love.load()
 
   appleX, appleY = newApple()
 
-  img = love.graphics.newImage("circle.png")
+  apple = love.graphics.newImage("apple.png")
+  border = love.graphics.newImage("border.png")
+  head = love.graphics.newImage("head.png")
+  segment = love.graphics.newImage("segment.png")
+
   font = love.graphics.newFont(20)
+
   counter = 0
   tick = 0
   score = 0
@@ -104,13 +109,28 @@ end
 
 function love.draw()
   for k, seg in ipairs(snake) do
-    love.graphics.draw(img, seg.x, seg.y, 0, 0.05, 0.05)
+    if k == 1 then
+      if dir == LEFT then
+        rotation = math.pi
+      elseif dir == RIGHT then
+        rotation = 0
+      elseif dir == UP then
+        rotation = math.pi * 3 / 2
+      elseif dir == DOWN then
+        rotation = math.pi / 2
+      end
+
+      love.graphics.draw(head, seg.x, seg.y, rotation, 0.05, 0.05, 110, 110)
+    else
+      love.graphics.draw(segment, seg.x, seg.y, 0, 0.05, 0.05, 110, 110)
+    end
   end
-  love.graphics.draw(img, appleX, appleY, 0, 0.05, 0.05)
+  love.graphics.draw(apple, appleX, appleY, 0, 0.05, 0.05, 110, 110)
+  love.graphics.draw(border, -1, -1)
 
   if collision then
     love.graphics.setFont(font)
-    love.graphics.print("You lost!", 75, 75, 0, scale, scale)
+    love.graphics.print("You lost!", 110, 110, counter, scale, scale, 50, 20)
     paused = true
     counter = counter + 0.02
     scale = math.abs(math.cos(counter))
